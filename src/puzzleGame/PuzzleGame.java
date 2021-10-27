@@ -14,6 +14,7 @@ public class PuzzleGame extends JFrame implements ActionListener {
     JPanel topPanel = new JPanel() ;
     ArrayList<JButton> buttonsList = new ArrayList<>();
     JButton emptyButton = new JButton("") ;
+    JLabel winMessage = new JLabel() ;
     JButton newGameButton = new JButton("New Game");
     JButton solutionButton = new JButton("Solution") ;
 
@@ -36,6 +37,7 @@ public class PuzzleGame extends JFrame implements ActionListener {
         shuffleButtons();
 
         topPanel.add(solutionButton) ;
+        topPanel.add(winMessage) ;
         topPanel.add(newGameButton) ;
 
         newGameButton.addActionListener(e -> {
@@ -101,7 +103,7 @@ public class PuzzleGame extends JFrame implements ActionListener {
                 return false ;
             }
         }
-
+        winMessage.setText("You won!") ;
         JOptionPane.showMessageDialog(null, "Congratulations! You won!");
         return true ;
     }
