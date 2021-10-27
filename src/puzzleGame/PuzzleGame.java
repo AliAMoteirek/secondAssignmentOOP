@@ -14,6 +14,7 @@ public class PuzzleGame extends JFrame implements ActionListener {
     JPanel topPanel = new JPanel() ;
     ArrayList<JButton> buttonsList = new ArrayList<>();
     JButton emptyButton = new JButton("") ;
+    JButton buttonClicked ;
     JButton newGameButton = new JButton("New Game");
 
     public PuzzleGame() {
@@ -71,10 +72,30 @@ public class PuzzleGame extends JFrame implements ActionListener {
         gamePanel.repaint();
     }
 
+    public void swapButtons () {
+        Point tempLocation = buttonClicked.getLocation() ;
+        buttonClicked.setLocation(emptyButton.getLocation());
+        emptyButton.setLocation(tempLocation);
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
 
-    }
+        buttonClicked = (JButton) e.getSource();
+        double bcX = buttonClicked.getBounds().getX() ;
+        double bcY = buttonClicked.getBounds().getY() ;
+        double ebX = emptyButton.getBounds().getX() ;
+        double ebY = emptyButton.getBounds().getY() ;
+
+            if ((bcX == ebX) && (ebY == (bcY + buttonClicked.getBounds().getHeight())) ||
+            ((bcY == ebY) && (ebX == bcX + emptyButton.getBounds().getWidth()))) {
+                swapButtons();
+
+            } else if ((bcX == ebX) && (ebY == Math.abs(bcY - buttonClicked.getBounds().getHeight())) ||
+            ((bcY == ebY) && (ebX == Math.abs(bcX - emptyButton.getBounds().getWidth())))) {
+                swapButtons();
+            }
+        }
 
 
 
