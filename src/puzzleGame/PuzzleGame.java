@@ -15,6 +15,7 @@ public class PuzzleGame extends JFrame implements ActionListener {
     ArrayList<JButton> buttonsList = new ArrayList<>();
     JButton emptyButton = new JButton("") ;
     JButton newGameButton = new JButton("New Game");
+    JButton solutionButton = new JButton("Solution") ;
 
     public PuzzleGame() {
         gamePanel.setLayout(new GridLayout(size,size)) ;
@@ -34,11 +35,19 @@ public class PuzzleGame extends JFrame implements ActionListener {
 
         shuffleButtons();
 
+        topPanel.add(solutionButton) ;
         topPanel.add(newGameButton) ;
 
         newGameButton.addActionListener(e -> {
             if (e.getSource() == newGameButton) {
                 shuffleButtons() ;
+            }
+        });
+
+        solutionButton.addActionListener(e -> {
+            if (e.getSource() == solutionButton) {
+                buttonsList.clear();
+                getSolution();
             }
         });
 
@@ -63,6 +72,21 @@ public class PuzzleGame extends JFrame implements ActionListener {
         gamePanel.removeAll();
         for (JButton button : buttonsList) {
             gamePanel.add(button);
+        }
+        emptyButton.setVisible(false);
+        buttonsList.add(emptyButton) ;
+        gamePanel.add(emptyButton) ;
+        gamePanel.revalidate();
+        gamePanel.repaint();
+    }
+
+    public void getSolution() {
+        gamePanel.removeAll() ;
+        for (int i = 0 ; i < ((size * size) - 1) ; i++) {
+            JButton button = new JButton(Integer.toString(i+1)) ;
+            button.addActionListener(this) ;
+            gamePanel.add(button) ;
+            buttonsList.add(button) ;
         }
         emptyButton.setVisible(false);
         buttonsList.add(emptyButton) ;
