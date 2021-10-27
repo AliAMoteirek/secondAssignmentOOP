@@ -45,6 +45,7 @@ public class PuzzleGame extends JFrame implements ActionListener {
             if (e.getSource() == newGameButton) {
                 shuffleButtons() ;
                 for (JButton jButton : buttonsList) {
+                    jButton.setBackground(Color.lightGray) ;
                     jButton.setEnabled(true);
                 }
                 winMessage.setText("") ;
@@ -138,6 +139,7 @@ public class PuzzleGame extends JFrame implements ActionListener {
         } else {
             for (JButton jButton : buttonsList) {
                 jButton.setBackground(new Color(144, 238, 144));
+                jButton.setOpaque(true);
                 jButton.setEnabled(false);
             }
             JOptionPane.showMessageDialog(null, "Congratulations! You won!");
