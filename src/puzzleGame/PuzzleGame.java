@@ -79,8 +79,7 @@ public class PuzzleGame extends JFrame implements ActionListener {
 
 
     public static void main(String[] args) {
-        new PuzzleGame() ;
+        System.out.println("Test");
+        System.out.println("Yasser Test");
     }
-
-
 }
