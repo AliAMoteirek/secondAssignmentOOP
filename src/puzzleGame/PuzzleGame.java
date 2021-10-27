@@ -95,6 +95,17 @@ public class PuzzleGame extends JFrame implements ActionListener {
         gamePanel.repaint();
     }
 
+    private boolean isGameSolved() {
+        for (int i = 0 ; i < buttonsList.size() - 1 ; i++) {
+            if (!buttonsList.get(i).getText().equals(String.valueOf(i + 1))){
+                return false ;
+            }
+        }
+
+        JOptionPane.showMessageDialog(null, "Congratulations! You won!");
+        return true ;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
 
