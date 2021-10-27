@@ -2,6 +2,8 @@ package puzzleGame;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class PuzzleGame extends JFrame {
     JPanel gamePanel = new JPanel() ;
@@ -29,6 +31,22 @@ public class PuzzleGame extends JFrame {
         setVisible(true) ;
         setLocationRelativeTo(null) ;
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE) ;
+    }
+
+    public void shuffleButtons() {
+        if (button != null) {
+            Collections.shuffle(Arrays.asList(button));
+            layoutButtons();
+        }
+    }
+
+    public void layoutButtons() {
+        gamePanel.removeAll();
+        for (JButton button : button) {
+            gamePanel.add(button);
+        }
+        gamePanel.revalidate();
+        gamePanel.repaint();
     }
 
     public static void main(String[] args) {
