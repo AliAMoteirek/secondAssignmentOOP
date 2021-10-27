@@ -36,6 +36,12 @@ public class PuzzleGame extends JFrame implements ActionListener {
 
         topPanel.add(newGameButton) ;
 
+        newGameButton.addActionListener(e -> {
+            if (e.getSource() == newGameButton) {
+                shuffleButtons() ;
+            }
+        });
+
         add(gamePanel, "Center") ;
         add(topPanel, "North") ;
         setTitle("The Fiftheenth Puzzel");
