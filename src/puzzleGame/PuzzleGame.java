@@ -37,7 +37,7 @@ public class PuzzleGame extends JFrame {
         setSize(420,420) ;
         setVisible(true) ;
         setLocationRelativeTo(null) ;
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE) ;
+        setDefaultCloseOperation(EXIT_ON_CLOSE) ;
     }
 
     public void shuffleButtons() {
