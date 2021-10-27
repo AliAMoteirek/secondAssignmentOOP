@@ -22,6 +22,13 @@ public class PuzzleGame extends JFrame {
             gamePanel.add(button[i]) ;
         }
 
+        shuffleButtons() ;
+
+        newGameButton.addActionListener(e -> {
+            if (e.getSource() == newGameButton) {
+                shuffleButtons();
+            }
+        });
 
         topPanel.add(newGameButton) ;
         add(topPanel, "North") ;
