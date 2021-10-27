@@ -104,8 +104,6 @@ public class PuzzleGame extends JFrame implements ActionListener {
                 return false ;
             }
         }
-        winMessage.setText("You won!") ;
-        JOptionPane.showMessageDialog(null, "Congratulations! You won!");
         return true ;
     }
 
@@ -119,20 +117,29 @@ public class PuzzleGame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         buttonClicked = (JButton) e.getSource();
-        double bcX = buttonClicked.getBounds().getX() ;
-        double bcY = buttonClicked.getBounds().getY() ;
-        double ebX = emptyButton.getBounds().getX() ;
-        double ebY = emptyButton.getBounds().getY() ;
+        double bcX = buttonClicked.getBounds().getX();
+        double bcY = buttonClicked.getBounds().getY();
+        double ebX = emptyButton.getBounds().getX();
+        double ebY = emptyButton.getBounds().getY();
 
+        if (!isGameSolved()) {
             if ((bcX == ebX) && (ebY == (bcY + buttonClicked.getBounds().getHeight())) ||
-            ((bcY == ebY) && (ebX == bcX + emptyButton.getBounds().getWidth()))) {
+                    ((bcY == ebY) && (ebX == bcX + emptyButton.getBounds().getWidth()))) {
                 swapButtons();
 
             } else if ((bcX == ebX) && (ebY == Math.abs(bcY - buttonClicked.getBounds().getHeight())) ||
-            ((bcY == ebY) && (ebX == Math.abs(bcX - emptyButton.getBounds().getWidth())))) {
+                    ((bcY == ebY) && (ebX == Math.abs(bcX - emptyButton.getBounds().getWidth())))) {
                 swapButtons();
             }
+        } else {
+            for (JButton jButton : buttonsList) {
+                jButton.setBackground(new Color(144, 238, 144));
+                jButton.setEnabled(false);
+            }
+            JOptionPane.showMessageDialog(null, "Congratulations! You won!");
+            winMessage.setText("You won!");
         }
+    }
 
 
 
