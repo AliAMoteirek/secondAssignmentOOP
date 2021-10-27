@@ -99,6 +99,19 @@ public class PuzzleGame extends JFrame implements ActionListener {
         gamePanel.repaint();
     }
 
+    private boolean isSolved() {
+        boolean condition = true;
+        for (int i = 0 ; i < buttonsList.size() - 1 ; i++) {
+            if (!buttonsList.get(i).getText().equals(Integer.toString(i + 1))) {
+                condition = false  ;
+            }
+        }
+        if(condition) {
+            winMessage.setText("You won!") ;
+        }
+        return condition ;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
 
