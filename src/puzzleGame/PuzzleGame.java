@@ -44,6 +44,10 @@ public class PuzzleGame extends JFrame implements ActionListener {
         newGameButton.addActionListener(e -> {
             if (e.getSource() == newGameButton) {
                 shuffleButtons() ;
+                for (JButton jButton : buttonsList) {
+                    jButton.setEnabled(true);
+                }
+                winMessage.setText("") ;
             }
         });
 
