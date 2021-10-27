@@ -12,40 +12,46 @@ public class PuzzleGame extends JFrame implements ActionListener {
     final int size = 4 ;
     JPanel gamePanel = new JPanel() ;
     JPanel topPanel = new JPanel() ;
-    ArrayList<JButton> buttonsList = new ArrayList<>();
-    JButton emptyButton = new JButton("") ;
-    JButton buttonClicked ;
+    ArrayList<Button> buttonsList = new ArrayList<>() ;
+    Button emptyButton = new Button() ;
     JLabel winMessage = new JLabel() ;
-    JButton newGameButton = new JButton("New Game");
+    Button buttonClicked ;
+    JButton newGameButton = new JButton("New Game") ;
     JButton solutionButton = new JButton("Solution") ;
 
     public PuzzleGame() {
         gamePanel.setLayout(new GridLayout(size,size)) ;
 
         for (int i = 0 ; i < ((size * size) - 1) ; i++) {
-            JButton button = new JButton(Integer.toString(i+1)) ;
+            Button button = new Button() ;
+            button.setText(Integer.toString(i+1));
             button.addActionListener(this) ;
-            button.setOpaque(true);
             gamePanel.add(button) ;
             buttonsList.add(button) ;
-            emptyButton.setVisible(false);
-            buttonsList.add(emptyButton) ;
-            gamePanel.add(emptyButton) ;
-            gamePanel.revalidate();
-            gamePanel.repaint();
         }
+        emptyButton.setVisible(false);
+        buttonsList.add(emptyButton) ;
+        gamePanel.add(emptyButton) ;
 
-        shuffleButtons();
-
-        topPanel.add(solutionButton) ;
-        topPanel.add(winMessage) ;
-        topPanel.add(newGameButton) ;
+        while(true) {
+            shuffleButtons() ;
+            if (isGameSolvable()) {
+                layoutButtons();
+                break ;
+            }
+        }
 
         newGameButton.addActionListener(e -> {
             if (e.getSource() == newGameButton) {
-                shuffleButtons() ;
-                for (JButton jButton : buttonsList) {
-                    jButton.setBackground(Color.lightGray) ;
+                while(true) {
+                    shuffleButtons() ;
+                    if (isGameSolvable()) {
+                        layoutButtons();
+                        break ;
+                    }
+                }
+                for (Button jButton : buttonsList) {
+                    jButton.setBackground(new Color(103, 51, 150)) ;
                     jButton.setEnabled(true);
                 }
                 winMessage.setText("") ;
@@ -54,10 +60,27 @@ public class PuzzleGame extends JFrame implements ActionListener {
 
         solutionButton.addActionListener(e -> {
             if (e.getSource() == solutionButton) {
-                buttonsList.clear();
                 getSolution();
             }
         });
+
+        winMessage.setPreferredSize(new Dimension(220,90));
+        winMessage.setFont(new Font(Font.DIALOG_INPUT, Font.BOLD, 40));
+        winMessage.setHorizontalAlignment(JLabel.CENTER);
+
+        newGameButton.setPreferredSize(new Dimension (220,90));
+        newGameButton.setFont(new Font(Font.DIALOG_INPUT,Font.BOLD,30));
+        newGameButton.setFocusable(false);
+
+        solutionButton.setPreferredSize(new Dimension (220,90));
+        solutionButton.setFont(new Font(Font.DIALOG_INPUT,Font.BOLD,30));
+        solutionButton.setFocusable(false);
+
+        topPanel.add(solutionButton) ;
+        topPanel.add(winMessage) ;
+        topPanel.add(newGameButton) ;
+
+        //gamePanel.setBackground(new Color(159, 114, 204));
 
         add(gamePanel, "Center") ;
         add(topPanel, "North") ;
@@ -65,14 +88,40 @@ public class PuzzleGame extends JFrame implements ActionListener {
         setSize(820,820) ;
         setVisible(true) ;
         setLocationRelativeTo(null) ;
-        setDefaultCloseOperation(EXIT_ON_CLOSE) ;
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE) ;
+    }
 
+    // https://ssaurel.medium.com/developing-a-15-puzzle-game-of-fifteen-in-java-dfe1359cc6e3
+    /*
+        a pair of tiles (a, b) form an inversion if a appears before b but a > b.
+        For above example, consider the tiles written out in a row, like this:
+        2 1 3 4 5 6 7 8 9 10 11 12 13 14 15 X
+        The above grid forms only 1 inversion i.e. (2, 1).
+     */
+    private boolean isGameSolvable() {
+        int countInversions = 0;
+        for (int i = 0; i < buttonsList.size() - 1 ; i++) {
+            for (int j = 0; j < i; j++) {
+                if (Integer.parseInt(buttonsList.get(j).getText()) > Integer.parseInt(buttonsList.get(i).getText()))
+                    countInversions++;
+            }
+        }
+        return countInversions % 2 == 0;
     }
 
     public void shuffleButtons() {
+
         if (buttonsList != null) {
             Collections.shuffle(buttonsList);
-            layoutButtons();
+            int emptyIndex = 0 ;
+            for (int i = 0; i < buttonsList.size(); i++) {
+                if (buttonsList.get(i).getText().equals("")) {
+                    emptyIndex = i ;
+                    break ;
+                }
+            } if(emptyIndex < buttonsList.size() - 1) {
+                Collections.swap(buttonsList, emptyIndex, buttonsList.size() - 1);
+            }
         }
     }
 
@@ -81,17 +130,16 @@ public class PuzzleGame extends JFrame implements ActionListener {
         for (JButton button : buttonsList) {
             gamePanel.add(button);
         }
-        emptyButton.setVisible(false);
-        buttonsList.add(emptyButton) ;
-        gamePanel.add(emptyButton) ;
         gamePanel.revalidate();
         gamePanel.repaint();
     }
 
     public void getSolution() {
+        buttonsList.clear();
         gamePanel.removeAll() ;
         for (int i = 0 ; i < ((size * size) - 1) ; i++) {
-            JButton button = new JButton(Integer.toString(i+1)) ;
+            Button button = new Button() ;
+            button.setText(Integer.toString(i+1));
             button.addActionListener(this) ;
             gamePanel.add(button) ;
             buttonsList.add(button) ;
@@ -103,50 +151,39 @@ public class PuzzleGame extends JFrame implements ActionListener {
         gamePanel.repaint();
     }
 
-    private boolean isGameSolved() {
+    private boolean isSolved() {
+        boolean condition = true;
         for (int i = 0 ; i < buttonsList.size() - 1 ; i++) {
-            if (!buttonsList.get(i).getText().equals(String.valueOf(i + 1))){
-                return false ;
+            if (!buttonsList.get(i).getText().equals(Integer.toString(i + 1))) {
+                condition = false  ;
             }
         }
-        return true ;
-    }
-
-    public void swapButtons () {
-        Point tempLocation = buttonClicked.getLocation() ;
-        buttonClicked.setLocation(emptyButton.getLocation());
-        emptyButton.setLocation(tempLocation);
+        if(condition) {
+            winMessage.setText("You won!") ;
+        }
+        return condition ;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        buttonClicked = (Button) e.getSource();
+        int btnIndex = buttonsList.indexOf(buttonClicked) ;
+        int emptyIndex = buttonsList.indexOf(emptyButton) ;
+        if (btnIndex - 1 == emptyIndex || btnIndex + 1 == emptyIndex
+                || btnIndex - 4 == emptyIndex || btnIndex + 4 == emptyIndex) {
+            Collections.swap(buttonsList,btnIndex,emptyIndex);
+            layoutButtons();
+        }
 
-        buttonClicked = (JButton) e.getSource();
-        double bcX = buttonClicked.getBounds().getX();
-        double bcY = buttonClicked.getBounds().getY();
-        double ebX = emptyButton.getBounds().getX();
-        double ebY = emptyButton.getBounds().getY();
-
-        if (!isGameSolved()) {
-            if ((bcX == ebX) && (ebY == (bcY + buttonClicked.getBounds().getHeight())) ||
-                    ((bcY == ebY) && (ebX == bcX + emptyButton.getBounds().getWidth()))) {
-                swapButtons();
-
-            } else if ((bcX == ebX) && (ebY == Math.abs(bcY - buttonClicked.getBounds().getHeight())) ||
-                    ((bcY == ebY) && (ebX == Math.abs(bcX - emptyButton.getBounds().getWidth())))) {
-                swapButtons();
-            }
-        } else {
-            for (JButton jButton : buttonsList) {
+        if(isSolved()) {
+            for (Button jButton : buttonsList) {
                 jButton.setBackground(new Color(144, 238, 144));
-                jButton.setOpaque(true);
                 jButton.setEnabled(false);
             }
             JOptionPane.showMessageDialog(null, "Congratulations! You won!");
-            winMessage.setText("You won!");
+            winMessage.setText("You won!") ;
         }
     }
-
 
 
     public static void main(String[] args) {
