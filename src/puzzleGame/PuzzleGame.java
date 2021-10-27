@@ -2,61 +2,79 @@ package puzzleGame;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Collections;
 
-public class PuzzleGame extends JFrame {
+public class PuzzleGame extends JFrame implements ActionListener {
+
+    final int size = 4 ;
     JPanel gamePanel = new JPanel() ;
     JPanel topPanel = new JPanel() ;
-    JButton[] button = new JButton[16] ;
+    ArrayList<JButton> buttonsList = new ArrayList<>();
+    JButton emptyButton = new JButton("") ;
     JButton newGameButton = new JButton("New Game");
 
     public PuzzleGame() {
-        gamePanel.setLayout(new GridLayout(4,4)) ;
+        gamePanel.setLayout(new GridLayout(size,size)) ;
 
-        for (int i = 0 ; i < button.length ; i++) {
-            button[i] = new JButton();
-            if (i != button.length - 1) {
-                button[i].setText(Integer.toString(i + 1));
-            }
-            gamePanel.add(button[i]) ;
+        for (int i = 0 ; i < ((size * size) - 1) ; i++) {
+            JButton button = new JButton(Integer.toString(i+1)) ;
+            button.addActionListener(this) ;
+            button.setOpaque(true);
+            gamePanel.add(button) ;
+            buttonsList.add(button) ;
+            emptyButton.setVisible(false);
+            buttonsList.add(emptyButton) ;
+            gamePanel.add(emptyButton) ;
+            gamePanel.revalidate();
+            gamePanel.repaint();
         }
 
-        shuffleButtons() ;
-
-        newGameButton.addActionListener(e -> {
-            if (e.getSource() == newGameButton) {
-                shuffleButtons();
-            }
-        });
+        shuffleButtons();
 
         topPanel.add(newGameButton) ;
-        add(topPanel, "North") ;
-        add(gamePanel, "Center") ;
 
-        setSize(420,420) ;
+        add(gamePanel, "Center") ;
+        add(topPanel, "North") ;
+        setTitle("The Fiftheenth Puzzel");
+        setSize(820,820) ;
         setVisible(true) ;
         setLocationRelativeTo(null) ;
         setDefaultCloseOperation(EXIT_ON_CLOSE) ;
+
     }
 
     public void shuffleButtons() {
-        if (button != null) {
-            Collections.shuffle(Arrays.asList(button));
+        if (buttonsList != null) {
+            Collections.shuffle(buttonsList);
             layoutButtons();
         }
     }
 
     public void layoutButtons() {
         gamePanel.removeAll();
-        for (JButton button : button) {
+        for (JButton button : buttonsList) {
             gamePanel.add(button);
         }
+        emptyButton.setVisible(false);
+        buttonsList.add(emptyButton) ;
+        gamePanel.add(emptyButton) ;
         gamePanel.revalidate();
         gamePanel.repaint();
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+    }
+
+
+
     public static void main(String[] args) {
         new PuzzleGame() ;
     }
+
+
 }
