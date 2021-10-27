@@ -80,15 +80,13 @@ public class PuzzleGame extends JFrame implements ActionListener {
         topPanel.add(winMessage) ;
         topPanel.add(newGameButton) ;
 
-        //gamePanel.setBackground(new Color(159, 114, 204));
-
         add(gamePanel, "Center") ;
         add(topPanel, "North") ;
         setTitle("The Fiftheenth Puzzel");
         setSize(820,820) ;
         setVisible(true) ;
         setLocationRelativeTo(null) ;
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE) ;
+        setDefaultCloseOperation(EXIT_ON_CLOSE) ;
     }
 
     // https://ssaurel.medium.com/developing-a-15-puzzle-game-of-fifteen-in-java-dfe1359cc6e3
