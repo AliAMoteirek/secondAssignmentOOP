@@ -114,7 +114,23 @@ public class PuzzleGame extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        buttonClicked = (JButton) e.getSource();
+        int btnIndex = buttonsList.indexOf(buttonClicked) ;
+        int emptyIndex = buttonsList.indexOf(emptyButton) ;
+        if (btnIndex - 1 == emptyIndex || btnIndex + 1 == emptyIndex
+                || btnIndex - 4 == emptyIndex || btnIndex + 4 == emptyIndex) {
+            Collections.swap(buttonsList,btnIndex,emptyIndex);
+            layoutButtons();
+        }
 
+        if(isSolved()) {
+            for (JButton jButton : buttonsList) {
+                jButton.setBackground(new Color(144, 238, 144));
+                jButton.setEnabled(false);
+            }
+            JOptionPane.showMessageDialog(null, "You won!");
+            winMessage.setText("You won!") ;
+        }
     }
 
 
