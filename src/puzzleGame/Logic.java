@@ -55,5 +55,20 @@ public class Logic {
         gamePanel.repaint();
     }
 
+    public void shuffleButtons(ArrayList<Button> buttonsList) {
+        if (buttonsList != null) {
+            Collections.shuffle(buttonsList);
+            int emptyIndex = 0 ;
+            for (int i = 0; i < buttonsList.size(); i++) {
+                if (buttonsList.get(i).getText().equals("")) {
+                    emptyIndex = i ;
+                    break ;
+                }
+            } if(emptyIndex < buttonsList.size() - 1) {
+                Collections.swap(buttonsList, emptyIndex, buttonsList.size() - 1);
+            }
+        }
+    }
+
 
 }
