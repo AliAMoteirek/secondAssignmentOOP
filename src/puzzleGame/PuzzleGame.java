@@ -171,6 +171,7 @@ public class PuzzleGame extends JFrame implements ActionListener {
                 || btnIndex - 4 == emptyIndex || btnIndex + 4 == emptyIndex) {
             Collections.swap(buttonsList,btnIndex,emptyIndex);
             layoutButtons();
+
         }
 
         if(isSolved()) {
