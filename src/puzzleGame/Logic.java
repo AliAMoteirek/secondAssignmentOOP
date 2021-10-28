@@ -48,7 +48,7 @@ public class Logic {
 
     public void layoutButtons(JPanel gamePanel, List<Button> buttonsList) {
         gamePanel.removeAll();
-        for (JButton button : buttonsList) {
+        for (Button button : buttonsList) {
             gamePanel.add(button);
         }
         gamePanel.revalidate();
