@@ -2,12 +2,9 @@ package puzzleGame;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class PuzzleGame extends JFrame implements ActionListener {
-
+public class PuzzleGame extends JFrame  {
     final int size = 4 ;
     JPanel gamePanel = new JPanel() ;
     JPanel topPanel = new JPanel() ;
@@ -21,18 +18,7 @@ public class PuzzleGame extends JFrame implements ActionListener {
 
     public PuzzleGame() {
         gamePanel.setLayout(new GridLayout(size,size)) ;
-
-        for (int i = 0 ; i < ((size * size) - 1) ; i++) {
-            Button button = new Button() ;
-            button.setText(Integer.toString(i+1));
-            button.addActionListener(this) ;
-            gamePanel.add(button) ;
-            buttonsList.add(button) ;
-        }
-        emptyButton.setVisible(false);
-        buttonsList.add(emptyButton) ;
-        gamePanel.add(emptyButton) ;
-
+        getSolution() ;
         while(true) {
             l.shuffleButtons(buttonsList);
             if (l.isGameSolvable(buttonsList)) {
@@ -95,7 +81,19 @@ public class PuzzleGame extends JFrame implements ActionListener {
         for (int i = 0 ; i < ((size * size) - 1) ; i++) {
             Button button = new Button() ;
             button.setText(Integer.toString(i+1));
-            button.addActionListener(this) ;
+            button.addActionListener(e -> {
+                buttonClicked = (Button) e.getSource();
+                l.swapButtons(buttonsList,gamePanel,buttonClicked,emptyButton);
+
+                if(l.isSolved(buttonsList)) {
+                    for (Button jButton : buttonsList) {
+                        jButton.setBackground(new Color(144, 238, 144));
+                        jButton.setEnabled(false);
+                    }
+                    winMessage.setText("You won!") ;
+                    JOptionPane.showMessageDialog(null, "Congratulations! You won!");
+                }
+            }) ;
             gamePanel.add(button) ;
             buttonsList.add(button) ;
         }
@@ -106,20 +104,6 @@ public class PuzzleGame extends JFrame implements ActionListener {
         gamePanel.repaint();
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        buttonClicked = (Button) e.getSource();
-        l.swapButtons(buttonsList, gamePanel, buttonClicked, emptyButton);
-
-        if (l.isSolved(buttonsList)) {
-            for (Button jButton : buttonsList) {
-                jButton.setBackground(new Color(144, 238, 144));
-                jButton.setEnabled(false);
-            }
-            winMessage.setText("You won!");
-            JOptionPane.showMessageDialog(null, "Congratulations! You won!");
-        }
-    }
     public static void main(String[] args) {
         new PuzzleGame() ;
     }
